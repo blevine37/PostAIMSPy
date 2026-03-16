@@ -1,0 +1,42 @@
+# ══════════════════════════════════════════════════════════════
+# PostAIMSPy v1.0 — Input File
+# Post-processing for Ab-Initio Multiple Spawning in Python
+# ══════════════════════════════════════════════════════════════
+#
+# Edit the values below for your system.
+# Run with:  postaimspy run input.yaml
+# Run a single step:  postaimspy run input.yaml --steps separate
+
+project_name: cracac3
+work_dir: .                            # root directory containing ICs
+reference_xyz: cracac3.xyz             # starting geom (ref) used for initial conditions (Angstrom)
+transition_dipole: [0.0, 0.0, 1.0]     # [dx, dy, dz] calculated transition dipole to align ref geom to +Z-axis
+source_code: pyspawn                   # pyspawn | fms90
+
+# ── Trajectory separation ────────────────────────────────────
+separate:
+  enabled: true
+  tmax: 25000          # max simulation time (a.u.)
+  tstep: 250           # time-bin width (a.u.)
+  num_sims: 50         # number of AIMS initial conditions i.e. directories
+  pop_cutoff: 0.0      # discard TBFs with population <= this value
+  states: [0, 1]       # electronic states to extract (0=S0, 1=S1)
+  sim_dir_prefix: ""   # "" for 1/,2/,3/; "ic" for ic1/,ic2/; "IC" for IC1/,IC2/
+
+# ── Weighted k-means clustering ──────────────────────────────
+cluster:
+  enabled: true
+  num_clusters: 80     # number of representative structures per time-bin
+  n_init: 200          # KMeans random restarts (higher = more robust)
+  max_iter: 1000
+  tol: 1.0e-10
+  random_seed: 42      # random seed for reproducibility
+  cluster_states: [1]  # only cluster S1 geometries; null = all states
+
+# ── Alignment & RMSD minimization ───────────────────────────
+align:
+  enabled: true
+  rotation_method: kabsch    # kabsch | quaternion | none
+  reorder: false             # reorder atoms via Hungarian algorithm            
+  reorder_method: hungarian
+  ignore_hydrogen: false     # exclude H atoms from RMSD calculation

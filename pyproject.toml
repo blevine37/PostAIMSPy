@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "postaimspy"
+version = "1.0.0"
+description = "Post-processing for Ab-Initio Multiple Spawning in Python"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Arshad Mehmood"},
+    {name = "Ying You"},
+]
+keywords = ["AIMS", "pySpawn", "FMS90", "photochemistry", "nonadiabatic dynamics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.7",
+    "scikit-learn>=1.0",
+    "h5py>=3.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+fast = ["mdtraj>=1.9"]
+plot = ["matplotlib>=3.5"]
+dev  = ["pytest>=7", "ruff"]
+
+[project.scripts]
+postaimspy = "postaimspy.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["postaimspy*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
